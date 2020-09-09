@@ -8,5 +8,8 @@
       "packages/*"
     ]
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.0.2"
+  }
 }

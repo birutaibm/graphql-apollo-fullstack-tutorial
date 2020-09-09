@@ -11,3 +11,5 @@ yarn workspace @tutorial/server start
 ```
 
 Nesta versão inicial o `client` não pode ser executado, pois seu `index.tsx` ainda será escrito em algum commit futuro no tutorial (pois é, também não entendi!).
+
+Na primeira parte do tutorial (commit `build a schema`) criei os esquemas de dados do GraphQL e o servidor que os utiliza conforme explicado no [tutorial](https://www.apollographql.com/docs/tutorial/schema/). Adicionalmente converti os arquivos `index` e `schema` de JavaScript para TypeScript. Consulte no `index` como rodar o servidor instanciar e por no ar um servidor e, no `schema` como definir tipos do GraphQL, incluindo `Query` e `Mutation`.
