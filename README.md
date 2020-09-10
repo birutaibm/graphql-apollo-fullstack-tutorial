@@ -10,7 +10,10 @@ yarn
 yarn workspace @tutorial/server start
 ```
 
-Nesta versão inicial o `client` não pode ser executado, pois seu `index.tsx` ainda será escrito em algum commit futuro no tutorial (pois é, também não entendi!).
+Na versão inicial o `client` não podia ser executado, pois seu `index.tsx` ainda seria escrito em algum commit futuro no tutorial (pois é, também não entendi!). A primeira versão em que o `client` pode ser executado é o sexto commit: `init client`.
+A partir de agora é possível executá-lo com o comando `yarn workspace @tutorial/client start`.
+
+## Histórico dos commits
 
 Na primeira parte do tutorial (commit `build a schema`) criei os esquemas de dados do GraphQL e o servidor que os utiliza conforme explicado no [tutorial](https://www.apollographql.com/docs/tutorial/schema/). Adicionalmente converti os arquivos `index` e `schema` de JavaScript para TypeScript. Consulte no `index` como rodar o servidor instanciar e por no ar um servidor e, no `schema` como definir tipos do GraphQL, incluindo `Query` e `Mutation`.
 
@@ -21,3 +24,5 @@ Na terceira parte do tutorial (commit `query resolver`) defini como o os resulta
 Na quarta parte do tutorial (commit `mutation resolver`) defini como as requisições de "mutation" feitas ao GraphQL deveriam ser processadas no servidor conforme explicado no [tutorial](https://www.apollographql.com/docs/tutorial/mutation-resolvers/). Como antes, tudo foi feito em typescript.
 
 Na quinta parte do tutorial (commit `apollo studio`) defini a chave para conectar no apollo studio e fiz as alterações do `index` como descrito no [tutorial](https://www.apollographql.com/docs/tutorial/production/) e materiais na página do [apollo studio](https://studio.apollographql.com).
+
+Na sexta parte do tutorial (commit `init client`) finalmente foi criado o index do cliente, conforme explicado no [tutorial](https://www.apollographql.com/docs/tutorial/client/). Agora é possível executar o cliente com o comando `yarn workspace @tutorial/client start` após ter executado o servidor como explicado no inicio destas instruções.
