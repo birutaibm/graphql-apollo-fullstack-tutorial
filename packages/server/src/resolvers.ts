@@ -23,6 +23,18 @@ interface Mission {
   missionPatchLarge: any;
 }
 
+interface LoginArgs {
+  email: string;
+}
+
+interface BookTripsArgs {
+  launchIds: number[];
+}
+
+interface CancelTripArgs {
+  launchId: number;
+}
+
 const Query = {
   launches: async (_: any, { pageSize = 20, after }: Pagination, { dataSources }: withDataSources) => {
     const allLaunches = await dataSources.launchAPI.getAllLaunches();
@@ -48,6 +60,46 @@ const Query = {
     dataSources.launchAPI.getLaunchById({ launchId: id }),
   me: (_: any, __: any, { dataSources }: withDataSources) =>
     dataSources.userAPI.findOrCreateUser()
+};
+
+const Mutation = {
+  bookTrips: async (_: any, { launchIds }: BookTripsArgs, { dataSources }: withDataSources) => {
+    const results = await dataSources.userAPI.bookTrips({ launchIds });
+    const launches = await dataSources.launchAPI.getLaunchesByIds({
+      launchIds,
+    });
+
+    return {
+      success: results && results.length === launchIds.length,
+      message:
+        results.length === launchIds.length
+          ? 'trips booked successfully'
+          : `the following launches couldn't be booked: ${launchIds.filter(
+              id => !results.includes(id),
+            )}`,
+      launches,
+    };
+  },
+  cancelTrip: async (_: any, { launchId }: CancelTripArgs, { dataSources }: withDataSources) => {
+    const result = await dataSources.userAPI.cancelTrip({ launchId });
+
+    if (!result)
+      return {
+        success: false,
+        message: 'failed to cancel trip',
+      };
+
+    const launch = await dataSources.launchAPI.getLaunchById({ launchId });
+    return {
+      success: true,
+      message: 'trip cancelled',
+      launches: [launch],
+    };
+  },
+  login: async (_: any, { email }: LoginArgs, { dataSources }: withDataSources) => {
+    const user = await dataSources.userAPI.findOrCreateUser({ email });
+    if (user) return Buffer.from(email).toString('base64');
+  }
 };
 
 const Mission = {
@@ -79,5 +131,5 @@ const User = {
 };
 
 export default {
-  Query, Mission, Launch, User,
+  Query, Mission, Launch, User, Mutation,
 };
