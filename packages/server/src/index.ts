@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import { ApolloServer } from 'apollo-server';
 import isEmail from 'isemail';
 
@@ -22,6 +24,10 @@ const server = new ApolloServer({
   },
   typeDefs,
   resolvers,
+  engine: {
+    reportSchema: true,
+    graphVariant: "development",
+  },
   dataSources: () => ({
     launchAPI: new LaunchAPI(),
     userAPI: new UserAPI({ store }),
