@@ -4,19 +4,16 @@ import {
   ApolloProvider,
   HttpLink,
   gql,
+  useQuery,
 } from '@apollo/client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import cache from './cache';
+import { typeDefs, resolvers } from './resolvers';
 import Pages from './pages';
+import Login from './pages/login';
 import injectStyles from './styles';
-
-const typeDefs = gql`
-  extend type Query {
-    isLoggedIn: Boolean!
-  }
-`;
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
@@ -29,12 +26,24 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     },
   }),
   typeDefs,
+  resolvers,
 });
+
+const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+  }
+`;
+
+function HomePage() {
+  const { data } = useQuery(IS_LOGGED_IN);
+  return data.isLoggedIn ? <Pages /> : <Login />;
+}
 
 injectStyles();
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Pages />
+    <HomePage />
   </ApolloProvider>,
   document.getElementById('root')
 );

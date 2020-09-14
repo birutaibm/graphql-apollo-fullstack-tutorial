@@ -1,6 +1,6 @@
 import { InMemoryCache, Reference } from "@apollo/client";
 
-type CacheVarType<T> = () => T;
+type CacheVarType<T> = (value?: T) => T;
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -8,6 +8,9 @@ const cache = new InMemoryCache({
       fields: {
         isLoggedIn() {
           return isLoggedInVar();
+        },
+        cartItems() {
+          return cartItemsVar();
         },
         launches: {
           keyArgs: false,
@@ -33,5 +36,7 @@ const cache = new InMemoryCache({
 export const isLoggedInVar: CacheVarType<boolean> = cache.makeVar<boolean>(
   !!localStorage.getItem('token')
 );
+
+export const cartItemsVar: CacheVarType<string[]> = cache.makeVar<string[]>([]);
 
 export default cache;
