@@ -34,3 +34,6 @@ Na oitava parte do tutorial (commit `login mutation`) criei a mutation de login 
 Chegando na última parte do tutorial percebi que aqueles trechos que deram errado na parte anterior seriam necessários. Além disso, na parte sete havia ficado um trecho do código utilizando funcionalidades depreciadas. Olhando no repositório do tutorial, na versão final, percebi que ambos os erros já haviam sido corrigidos, apenas não atualizaram o tutorial e voltei para corrigir ambos.
 
 Conforme mencionado no warning de depreciação a maneira recomendada para atualizar dados no client GraphQL é definir a propriedade `typePolicies` do cache. Então criei um `cache.ts` na raiz (para ser usado pelo `index`) onde será definida toda a configuração e manipulação de cache. Assim foi gerado o commit `fix client query`.
+
+Na oitava parte do tutorial, `writeData` tem o propósito de criar uma nova variável do GraphQL que estará presente apenas no client. Na versão 3 do GraphQL a maneira correta de fazer isso é com `cache.makeVar` e adicionar a propriedade no `typePolicies` do cache, também é necessário informar o `ApolloClient` destas novas variáveis. Veja essa correção no commit `fix login mutation`.
+
