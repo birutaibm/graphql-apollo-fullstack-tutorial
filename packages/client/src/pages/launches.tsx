@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 
 import { LaunchTile, Header, Button, Loading } from '../components';
@@ -47,25 +47,15 @@ const Launches: React.FC<LaunchesProps> = () => {
     GetLaunchListTypes.GetLaunchListVariables
   >(GET_LAUNCHES);
 
-  const updateQuery = useCallback(
-    (
-      prev: GetLaunchListTypes.GetLaunchList,
-      { fetchMoreResult }: { fetchMoreResult?: GetLaunchListTypes.GetLaunchList },
-    ) => {
-      if (!fetchMoreResult) return prev;
-      return {
-        ...fetchMoreResult,
-        launches: {
-          ...fetchMoreResult.launches,
-          launches: [
-            ...prev.launches.launches,
-            ...fetchMoreResult.launches.launches,
-          ],
-        },
-      };
-    },
-    []
-  );
+  const [isLoadingMore, setLoadingMore] = useState(false);
+
+  const handleLoadMore = useCallback(async () => {
+    setLoadingMore(true);
+    await fetchMore({
+      variables: { after: data?.launches.cursor },
+    });
+    setLoadingMore(false);
+  }, [data, fetchMore]);
 
   if (loading) return <Loading />;
   if (error) return <p>ERROR</p>;
@@ -78,16 +68,9 @@ const Launches: React.FC<LaunchesProps> = () => {
         <LaunchTile key={launch.id} launch={launch} />
       ))}
       {data.launches.hasMore && (
-        <Button
-          onClick={() =>
-            fetchMore({
-              variables: { after: data.launches.cursor },
-              updateQuery,
-            })
-          }
-        >
-          Load More
-        </Button>
+        isLoadingMore
+          ? <Loading />
+          : <Button onClick={handleLoadMore}>Load More</Button>
       )}
     </Fragment>
   );

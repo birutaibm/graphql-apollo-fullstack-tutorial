@@ -1,17 +1,18 @@
 import {
   ApolloClient,
-  InMemoryCache,
   NormalizedCacheObject,
   ApolloProvider,
   HttpLink,
 } from '@apollo/client';
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import cache from './cache';
 import Pages from './pages';
 import injectStyles from './styles';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache,
   link: new HttpLink({
     uri: 'http://localhost:4000/',
     headers: {
